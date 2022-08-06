@@ -21,14 +21,25 @@ int main(void)
 	Timer_Init();
 	Serial_Init();
 	
-	reset2origin_finger();
+	// reset2origin_finger();
 	while (1)
 	{
 		RxFlag = Serial_GetRxFlag();
 		if (RxFlag == 1)
 		{
 			RxData = Serial_GetRxData();
-			Serial_SendByte(RxData);
+			switch(RxData) {
+				case 1:
+					reset2origin_finger();
+					break;
+				case 2:
+					finger_down();
+					break;
+				case 3:
+					finger_dock_back();
+					break;
+			}
+			Serial_SendByte(RxData);	// send the command back to indicate complishment
 		}
 	}
 }
